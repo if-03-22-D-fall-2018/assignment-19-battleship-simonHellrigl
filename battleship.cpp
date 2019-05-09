@@ -60,15 +60,21 @@ void surround_with_Water(int row, int col)
 {
     for (int i = -1; i <= 1; i++)
     {
-        for (int j = 0; j <= 1; j++)
+        for (int j = -1; j <= 1; j++)
         {
-            if ((row-i > 0 && row-i < FIELDSIZE) && (col-j > 0 && col-j < FIELDSIZE))
+            if ((row-i >= 0 && row-i < FIELDSIZE) && (col-j >= 0 && col-j < FIELDSIZE))
             {
-                guesses[i][j] = Water;
+                guesses[row-i][col-j] = Water;
             }
         }
     }
 
+
+}
+
+bool IsNotOnBoard(int row, int col)
+{
+  return (row < 0 || row > FIELDSIZE-1 || col < 0 || col > FIELDSIZE-1);
 }
 
 /**
@@ -80,21 +86,22 @@ void surround_with_Water(int row, int col)
 */
 bool shoot(int row, int col)
 {
-    if (row < 0 || row > FIELDSIZE-1 || col < 0 || col > FIELDSIZE-1)
-    {
-        return false;
-    }
-    if (opContent[row][col] == Boat)
-    {
-
-        guesses[row][col] == Boat;
-        surround_with_Water(row, col);
-        return true;
-
-    }
+  if (IsNotOnBoard(row, col))
+  {
     return false;
-
-
+  }
+  if (opContent[row][col] == Boat)
+  {
+    surround_with_Water(row,col);
+    guesses[row][col] = Boat;
+    return true;
+  }
+  if (opContent[row][col] == Water)
+  {
+    guesses[row][col] = Water;
+    return true;
+  }
+  return false;
 
 }
 
@@ -106,6 +113,13 @@ bool shoot(int row, int col)
 */
 CellContent get_my_guess(int row, int col)
 {
+  if (IsNotOnBoard(row,col))
+  {
+    return OutOfRange;
+  }
+  else
+  {
     return guesses[row][col];
+  }
 
 }

@@ -18,6 +18,7 @@ static FILE* fdmy;
 static FILE* fdop;
 static CellContent myContent[FIELDSIZE][FIELDSIZE];
 static CellContent opContent[FIELDSIZE][FIELDSIZE];
+static CellContent guesses[FIELDSIZE][FIELDSIZE];
 void load_game()
 {
      fdmy = fopen("battleship.my", "r");
@@ -25,6 +26,13 @@ void load_game()
 
      int temp = fread(&myContent, sizeof(myContent), 1, fdmy);
      int temp2 = fread(&opContent, sizeof(opContent), 1, fdop);
+     for (int i = 0; i < FIELDSIZE; i++)
+     {
+         for (int j = 0; j < FIELDSIZE; j++)
+         {
+             guesses[i][j] = Unknown;
+         }
+     }
 
 
 
@@ -48,6 +56,21 @@ CellContent get_shot(int row, int col)
 
 }
 
+void surround_with_Water(int row, int col)
+{
+    for (int i = -1; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if ((row-i > 0 && row-i < FIELDSIZE) && (col-j > 0 && col-j < FIELDSIZE))
+            {
+                guesses[i][j] = Water;
+            }
+        }
+    }
+
+}
+
 /**
 *** Sets the row and column of the my guesses table to the value held in the
 *** opponents field. If this is a boat all surrounding cells are marked as water.
@@ -64,6 +87,9 @@ bool shoot(int row, int col)
     if (opContent[row][col] == Boat)
     {
         return true;
+        guesses[row][col] == Boat;
+        surround_with_Water(row, col);
+
     }
     return false;
 
@@ -79,6 +105,6 @@ bool shoot(int row, int col)
 */
 CellContent get_my_guess(int row, int col)
 {
-    return Unknown;
+    return guesses[row][col];
 
 }

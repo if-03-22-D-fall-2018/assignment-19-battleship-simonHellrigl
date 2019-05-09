@@ -24,8 +24,8 @@ void load_game()
      fdmy = fopen("battleship.my", "r");
      fdop = fopen("battleship.op", "r");
 
-     int temp = fread(&myContent, sizeof(myContent), 1, fdmy);
-     int temp2 = fread(&opContent, sizeof(opContent), 1, fdop);
+     fread(&myContent, sizeof(myContent), 1, fdmy);
+     fread(&opContent, sizeof(opContent), 1, fdop);
      for (int i = 0; i < FIELDSIZE; i++)
      {
          for (int j = 0; j < FIELDSIZE; j++)

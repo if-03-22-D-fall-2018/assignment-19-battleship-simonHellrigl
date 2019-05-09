@@ -58,9 +58,9 @@ CellContent get_shot(int row, int col)
 
 void surround_with_Water(int row, int col)
 {
-    for (int i = -1; i < 3; i++)
+    for (int i = -1; i <= 1; i++)
     {
-        for (int j = 0; j < 3; j++)
+        for (int j = 0; j <= 1; j++)
         {
             if ((row-i > 0 && row-i < FIELDSIZE) && (col-j > 0 && col-j < FIELDSIZE))
             {
@@ -82,13 +82,14 @@ bool shoot(int row, int col)
 {
     if (row < 0 || row > FIELDSIZE-1 || col < 0 || col > FIELDSIZE-1)
     {
-        return OutOfRange;
+        return false;
     }
     if (opContent[row][col] == Boat)
     {
-        return true;
+
         guesses[row][col] == Boat;
         surround_with_Water(row, col);
+        return true;
 
     }
     return false;

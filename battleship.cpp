@@ -57,7 +57,17 @@ CellContent get_shot(int row, int col)
 */
 bool shoot(int row, int col)
 {
-    
+    if (row < 0 || row > FIELDSIZE-1 || col < 0 || col > FIELDSIZE-1)
+    {
+        return OutOfRange;
+    }
+    if (opContent[row][col] == Boat)
+    {
+        return true;
+    }
+    return false;
+
+
 
 }
 
@@ -69,5 +79,6 @@ bool shoot(int row, int col)
 */
 CellContent get_my_guess(int row, int col)
 {
+    return Unknown;
 
 }
